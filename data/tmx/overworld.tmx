@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="84" height="149" tilewidth="32" tileheight="32" infinite="0" nextlayerid="28" nextobjectid="739">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="84" height="149" tilewidth="32" tileheight="32" infinite="0" nextlayerid="28" nextobjectid="739">
  <tileset firstgid="1" source="../tsx/school_tiles.tsx"/>
  <tileset firstgid="101" source="../tsx/Objects.tsx"/>
  <tileset firstgid="255" source="../tsx/Shade.tsx"/>
  <tileset firstgid="295" source="../tsx/glass_tiles.tsx"/>
  <tileset firstgid="327" source="../tsx/class_tiles.tsx"/>
- <imagelayer id="22" name="Image Layer 1" visible="0" offsetx="64" offsety="64">
-  <image source="../../graphics/Lageplan überarbeitet.png" width="2560" height="4640"/>
- </imagelayer>
  <layer id="17" name="Terrain" width="84" height="149">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
