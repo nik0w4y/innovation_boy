@@ -3,3 +3,5 @@ Me and my friend made a 2D-platformer game of our school where you can walk arou
 
 <img width="482" height="352" alt="image" src="https://github.com/user-attachments/assets/1307285b-d671-4bac-94f0-0b6eb6220f15" />
 <img width="482" height="352" alt="image" src="https://github.com/user-attachments/assets/6f8f4c72-ac92-4566-ab05-5447a806d95e" />
+
+beta, still in development
