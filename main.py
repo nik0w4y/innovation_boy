@@ -29,7 +29,6 @@ from settings import (
     PAUSE_BUTTON_HEIGHT,
     PAUSE_BUTTON_FONT_SIZE,
     PAUSE_BUTTON_POS_RESUME,
-    PAUSE_BUTTON_POS_SETTINGS,
     PAUSE_BUTTON_POS_QUIT,
     PAUSE_BUTTON_TEXT,
     COIN_AMOUNT,
@@ -361,8 +360,7 @@ class PauseMenu:
 
         self.buttons = [
             Button(PAUSE_BUTTON_TEXT[0], *PAUSE_BUTTON_POS_RESUME),
-            Button(PAUSE_BUTTON_TEXT[1], *PAUSE_BUTTON_POS_SETTINGS),
-            Button(PAUSE_BUTTON_TEXT[2], *PAUSE_BUTTON_POS_QUIT)
+            Button(PAUSE_BUTTON_TEXT[1], *PAUSE_BUTTON_POS_QUIT)
         ]
         self.selected_button_index = 0
         self.buttons[self.selected_button_index].set_selected(True)
@@ -385,8 +383,6 @@ class PauseMenu:
                     if selected_button == self.buttons[0]:
                         self.just_clicked_button = "resume"
                     elif selected_button == self.buttons[1]:
-                        self.just_clicked_button = "settings"
-                    elif selected_button == self.buttons[2]:
                         self.just_clicked_button = "quit"
 
     def draw(self, screen):
@@ -656,7 +652,7 @@ class PlayerLevel(pygame.sprite.Sprite):
 def play_platformer(level_name):
     global COLLECTED_COINS, coin_count
 
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
     clock = pygame.time.Clock()
 
     pause_menu = PauseMenu()
@@ -866,7 +862,7 @@ def load_collision_rects(tmx_data, object_layer_name="Boxes", object_name="colli
 ###########################
 def run_overworld():
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
     pygame.display.set_caption("Overworld")
     clock = pygame.time.Clock()
 
@@ -1066,9 +1062,6 @@ def run_overworld():
             elif pause_menu.just_clicked_button == "quit":
                 pygame.quit()
                 sys.exit()
-            elif pause_menu.just_clicked_button == "settings":
-                print("Settings not implemented (Overworld)!")
-                pause_menu.just_clicked_button = None
 
             draw_overworld_once()
             pause_menu.draw(screen)
