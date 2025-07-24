@@ -1,7 +1,3 @@
-###########################
-#        main.py          #
-###########################
-
 import os
 import sys
 import pygame
@@ -9,12 +5,10 @@ import pygame
 from settings import (
     SCREEN_WIDTH, SCREEN_HEIGHT, FPS,
     TILE_SIZE,
-    # Vier Richtungs-Geschwindigkeiten für Overworld:
     OVERWORLD_PLAYER_SPEED_UP,
     OVERWORLD_PLAYER_SPEED_DOWN,
     OVERWORLD_PLAYER_SPEED_LEFT,
     OVERWORLD_PLAYER_SPEED_RIGHT,
-
     LEVEL_PLAYER_SPEED, LEVEL_JUMP_STRENGTH,
     LEVEL_PLAYER_SPAWN,
     LEVEL_HITBOXES,
@@ -38,13 +32,9 @@ from settings import (
 MOVE_SPEED = LEVEL_PLAYER_SPEED
 JUMP_SPEED = -LEVEL_JUMP_STRENGTH
 
-# Global Variables (Coin-System)
 coin_count = 0
 COLLECTED_COINS = set()
 
-###########################
-#   FADE FUNCTIONS        #
-###########################
 def fade_out_current_scene(screen, clock, duration=1.0):
     old_scene = screen.copy()
     black_surface = pygame.Surface(screen.get_size())
@@ -121,9 +111,6 @@ def fade_in_black_screen(screen, clock, duration=1.0):
         screen.blit(overlay, (0, 0))
         pygame.display.flip()
 
-###########################
-#      OVERWORLD          #
-###########################
 class CameraOverworld:
     def __init__(self, width, height):
         self.camera = pygame.Rect(0, 0, width, height)
@@ -144,7 +131,6 @@ class PlayerOverworld(pygame.sprite.Sprite):
     def __init__(self, x, y, animations, map_width, map_height):
         super().__init__()
         self.animations = animations
-        # Use the sprite size as-is (no manual width override)
         self.image = animations["standing"][0]
         self.rect = self.image.get_rect(topleft=(x, y))
 
@@ -152,7 +138,6 @@ class PlayerOverworld(pygame.sprite.Sprite):
         self.animation_frame = 0
         self.animation_timer = 0
 
-        # Vier separate Geschwindigkeiten (aus settings.py)
         self.speed_up = OVERWORLD_PLAYER_SPEED_UP
         self.speed_down = OVERWORLD_PLAYER_SPEED_DOWN
         self.speed_left = OVERWORLD_PLAYER_SPEED_LEFT
@@ -161,17 +146,15 @@ class PlayerOverworld(pygame.sprite.Sprite):
         self.is_moving = False
         self.map_width = map_width
         self.map_height = map_height
-        self.can_move = True  # Lock movement if a textbox is open
+        self.can_move = True
 
     def update(self, dt, keys, terrain_layer_index, tmx_data, collision_rects):
-        # Lock movement if interacting
         if not self.can_move:
             return
 
         self.is_moving = False
         dx, dy = 0, 0
 
-        # Determine desired movement with directional speeds
         if keys[pygame.K_w]:
             dy -= self.speed_up * dt
             self.direction = "up"
@@ -189,19 +172,16 @@ class PlayerOverworld(pygame.sprite.Sprite):
             self.direction = "right"
             self.is_moving = True
 
-        # Move in X first (for better "wall sliding")
         next_rect = self.rect.copy()
         next_rect.x += dx
         if not self.check_collision(next_rect, terrain_layer_index, tmx_data, collision_rects):
             self.rect.x = next_rect.x
 
-        # Move in Y
         next_rect = self.rect.copy()
         next_rect.y += dy
         if not self.check_collision(next_rect, terrain_layer_index, tmx_data, collision_rects):
             self.rect.y = next_rect.y
 
-        # Animation handling
         if self.is_moving:
             self.animation_timer += dt
             if self.animation_timer >= 0.15:
@@ -218,14 +198,11 @@ class PlayerOverworld(pygame.sprite.Sprite):
                 self.animation_timer = 0
 
     def check_collision(self, test_rect, terrain_layer_index, tmx_data, collision_rects):
-        """Return True if there's a collision with terrain or collidable object."""
-        # Check map boundaries
         if test_rect.left < 0 or test_rect.right > self.map_width:
             return True
         if test_rect.top < 0 or test_rect.bottom > self.map_height:
             return True
 
-        # Tile-based collision (using terrain_layer)
         if terrain_layer_index is not None:
             corners = [
                 (test_rect.left, test_rect.top),
@@ -238,11 +215,9 @@ class PlayerOverworld(pygame.sprite.Sprite):
                 tile_y = int(corner_y // TILE_SIZE)
                 if 0 <= tile_x < tmx_data.width and 0 <= tile_y < tmx_data.height:
                     gid = tmx_data.get_tile_gid(tile_x, tile_y, terrain_layer_index)
-                    # If gid == 0, we treat it as collision in your code
                     if gid == 0:
                         return True
 
-        # Object-based collision
         if collision_rects:
             for c_rect in collision_rects:
                 if test_rect.colliderect(c_rect):
@@ -256,25 +231,18 @@ def get_object_by_name(tmx_data, name):
             return obj
     return None
 
-###########################
-#   DRAW OVERWORLD SCENE  #
-###########################
 def draw_overworld_scene(
     screen, camera_ow, tmx_data, terrain_layer_index,
     walls_layer, design_layer, shading_layer, all_sprites,
     mark_removed=False
 ):
-    """Draws the overworld. 
-       If mark_removed=True, then skip drawing 'mark' object from the map."""
     screen.fill((0, 0, 0))
 
-    # Terrain
     if terrain_layer_index is not None:
         terrain_layer = tmx_data.layers[terrain_layer_index]
         for x, y, tile in terrain_layer.tiles():
             screen.blit(tile, (x*TILE_SIZE + camera_ow.camera.x, y*TILE_SIZE + camera_ow.camera.y))
 
-    # Sprites (player, etc.)
     for spr in all_sprites:
         screen.blit(spr.image, camera_ow.apply(spr))
 
@@ -857,9 +825,7 @@ def load_collision_rects(tmx_data, object_layer_name="Boxes", object_name="colli
                     collision_rects.append(rect)
     return collision_rects
 
-###########################
-#        MAIN()           #
-###########################
+#hier importanta ja 
 def run_overworld():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
