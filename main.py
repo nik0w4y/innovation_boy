@@ -984,8 +984,6 @@ def run_overworld():
                         showing_textbox = None
                         player_ow.can_move = True
 
-                        # If that was the "second text" from interaction2 (i.e. coin_count > 30)
-                        # => Remove 'mark'
                         if just_interacted_hitbox == "interaction2" and coin_count > 30:
                             print("Hiding 'mark' because we used the second text from interaction2.")
                             mark_removed = True
